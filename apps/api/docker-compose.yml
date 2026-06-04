@@ -3,6 +3,8 @@ services:
     build: .
     ports:
       - "8000:8000"
+    volumes:
+      - ./alembic/versions:/app/alembic/versions
     environment:
       - ENVIRONMENT=${ENVIRONMENT}
       - DB_HOST=${DB_HOST}

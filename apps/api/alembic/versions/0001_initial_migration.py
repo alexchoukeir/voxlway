@@ -18,6 +18,7 @@ def upgrade() -> None:
         sa.Column("external_id", sa.BigInteger, unique=True, nullable=False),
         sa.Column("title", sa.Text, nullable=False),
         sa.Column("title_hash", sa.Text, nullable=False),
+        sa.Column("image", sa.Text, nullable=False),
         sa.Column("category", sa.Text, nullable=False),
         sa.Column("tags", sa.ARRAY(sa.Text), nullable=True),
         sa.Column("embedding", Vector(1536), nullable=False),
