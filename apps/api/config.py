@@ -50,15 +50,16 @@ class ConfigSettings:
     def _load_production(self):
         self.db_host = get_parameters('/games/host')
         self.db_password = get_parameters('/games/db-password')
-        self.db_name = os.environ['DB_NAME']
-        self.user = os.environ['DB_USER']
+        self.db_name = get_parameters('/games/db-name')
+        self.user = get_parameters('/games/db-user')
         self.api = get_parameters('/games/api')
         self.llm_key = get_parameters('/games/llm-key')
+        self.system_prompt = get_parameters('/games/system-prompt')
         self.sync_key = get_parameters('/games/sync-key')
-        self.aws_region = os.environ['AWS_REGION']
-        self.sqs_queue = os.environ['SQS_QUEUE']
+        self.aws_region = get_parameters('/games/aws-region')
+        self.sqs_queue = get_parameters('/games/sqs-queue')
         self.sqs_endpoint = None
-        self.s3_bucket = os.environ['S3_BUCKET']
+        self.s3_bucket = get_parameters('/games/s3-bucket')
 
     @property
     def database_url(self) -> str:
