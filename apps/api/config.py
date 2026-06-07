@@ -41,6 +41,7 @@ class ConfigSettings:
         self.user = os.environ['DB_USER']
         self.api = os.environ['API']
         self.llm_key = os.environ['LLM_KEY']
+        self.system_prompt = os.environ['SYSTEM_PROMPT']
         self.sync_key = os.environ['SYNC_KEY']
         self.aws_region = os.environ['AWS_REGION']
         self.sqs_queue = os.environ['SQS_QUEUE']

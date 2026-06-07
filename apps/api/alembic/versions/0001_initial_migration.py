@@ -39,7 +39,6 @@ def upgrade() -> None:
         sa.Column("status", sa.Text, server_default="running"),
     )
 
-    op.execute("CREATE INDEX ON games USING hnsw (embedding vector_cosine_ops)")
     op.execute("CREATE INDEX ON games (processed)")
     op.execute("CREATE INDEX ON games (external_id)")
     op.execute("CREATE INDEX ON games (category)")
