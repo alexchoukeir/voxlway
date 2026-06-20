@@ -72,6 +72,16 @@ class ConfigSettings:
         """
         return f"postgresql://{self.user}:{self.db_password}@{self.db_host}/{self.db_name}"
 
+    @property
+    def async_database_url(self) -> str:
+        """
+        Creates the async postgres database URL from the config settings.
+
+        Returns:
+            str: The async database URL.
+        """
+        return f"postgresql+asyncpg://{self.user}:{self.db_password}@{self.db_host}/{self.db_name}"
+
 @lru_cache()
 def get_config_settings() -> ConfigSettings:
     """

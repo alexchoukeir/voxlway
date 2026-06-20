@@ -10,6 +10,7 @@ dependencies = [
     "fastapi[standard]>=0.128.0",
     "pgvector>=0.4.2",
     "psycopg2-binary>=2.9.12",
+    "asyncpg>=0.31.0",
     "python-dotenv>=1.2.1",
     "sqlalchemy>=2.0.49",
 ]
