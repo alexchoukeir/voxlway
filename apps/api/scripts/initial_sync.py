@@ -13,43 +13,64 @@ def run() -> None:
     """
     Runs the initial sync process.
     """
-    # Fetch game data from the external API
-    print("Fetching game data from external API...")
-    games = fetch_game_data()
-    print(f"Fetched {len(games['games'])} games.")
-
-    # Backup existing game data to S3
-    print("Backing up game data to S3...")
-    s3 = boto3.client('s3', region_name=config_settings.aws_region)
-
-    try:
-        s3.put_object(Bucket=config_settings.s3_bucket, Key=f"backup/games_{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}.json", Body=json.dumps(games).encode("utf-8"))
-        print("Backup completed.")
-    except Exception as e:
-        print(f"Error occurred while backing up game data: {e}")
-
     db = SessionLocal()
+    sync_log = SyncLog(triggered_by="initial_sync")
+    db.add(sync_log)
+    db.commit()
+    db.refresh(sync_log)
 
-    # Add games to the database and queue
     try:
+        # Fetch game data from the external API
+        print("Fetching game data from external API...")
+        games = fetch_game_data()
+        print(f"Fetched {len(games['games'])} games.")
+
+        # Backup existing game data to S3
+        try:
+            print("Backing up game data to S3...")
+            s3 = boto3.client('s3', region_name=config_settings.aws_region)
+
+            s3.put_object(Bucket=config_settings.s3_bucket, Key=f"backup/games_{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}.json", Body=json.dumps(games).encode("utf-8"))
+            print("Backup completed.")
+        except Exception as e:
+            print(f"Error backing up game data to S3: {e}")
+        
+        # Insert new games into the database
+        print("Inserting new games into the database...")
         queue = []
         for game in games['games']:
             game_details = games['games'][game]
             db.add(Game(external_id=game, title=game_details[0], title_hash=hashlib.md5(game_details[0].encode()).hexdigest(), image=game_details[2]))
             queue.append({"external_id": game, "title": game_details[0]})
         db.commit()
+        print(f"Inserted {len(queue)} games into the database.")
+
+        # Send messages
+        print("Sending messages to SQS for processing...")
+        send_batch_messages(queue)
+        print(f"Queued {len(queue)} games for processing.")
+
+        sync_log.completed_at = datetime.now()
+        sync_log.new_games = len(queue)
+        sync_log.queue_total = len(queue)
+        sync_log.status = "queued"
+        db.commit()
+        print("Sync completed successfully.")
+    
     except Exception as e:
-        print(f"Database error occurred: {e}")
-        db.rollback()
+        try:
+            db.rollback()
+            sync_log.status = f"failed: {e}"
+            sync_log.completed_at = datetime.now()
+            db.add(sync_log)
+            db.commit()
+        except Exception as log_e:
+            print(f"Error logging sync failure: {log_e}")
+        
+        raise RuntimeError(f"Initial sync failed: {e}") from e
+    
     finally:
         db.close()
-    
-    # Send messages
-    send_batch_messages(queue)
-
-    print(f"Queued {len(queue)} games for processing.")
-
-    print("Initial sync completed.")
 
 if __name__ == "__main__":
     run()
