@@ -1,10 +1,15 @@
 import time
 import signal
+import json
+import datetime
 
-from sqs import receive_messages
+from apps.api.services.sqs import delete_messages
+from services.sqs import receive_messages
 from services.llm import generate
 from services.embeddings import generate_embeddings
 from database import SessionLocal
+from sqlalchemy import select
+from models import Game
 
 running = True
 
@@ -16,8 +21,69 @@ def signal_handler(sig, frame):
 signal.signal(signal.SIGTERM, signal_handler)
 signal.signal(signal.SIGINT, signal_handler)
 
-if __name__ == "__main__":
-    print("Worker started. Waiting for tasks...")
+def process_message(message: dict) -> None:
+    """
+    Processes the messages.
+    """
+    message_body = json.loads(message['Body'])
+
+    title = message_body['title']
+    external_id = message_body['external_id']
+
+    db = SessionLocal()
+
+    try:
+        game = db.execute(select(Game).where(Game.external_id == external_id)).scalar_one_or_none()
+
+        if game:
+            print(f"Game with external_id {external_id} already exists in the database. Skipping.")
+            return
+
+        # Generate
+        result = generate(title)
+        embedding_text = f"{title} {result['category']} {' '.join(result['tags'])}"
+        embedding = generate_embeddings(embedding_text)
+        
+        # Store in db
+        game.category = result['category']
+        game.tags = result['tags']
+        game.embeddings = embedding
+        game.processed = True
+        game.processed_at = datetime.now()
+        db.commit()
+    
+    except Exception as e:
+        print(f"Error: {e}")
+    
+    finally:
+        db.close()
+
+def run() -> None:
+    """
+    Runs the worker process that listens for messages from the SQS queue.
+    """
+    print("Worker started. Waiting...")
+    
     while running:
-        time.sleep(1)
+        # Receive messages
+        messages = receive_messages(maximum=5)
+
+        if not messages:
+            continue
+
+        # Process each message. After a message is processed, delete from the queue.
+        for message in messages:
+            if not running:
+                break
+            try:
+                process_message(message)
+                delete_messages(message['ReceiptHandle'])
+            except Exception as e:
+                print(f"Error processing message: {e}")
+        
+        time.sleep(0.5)
+    
     print("Worker stopped.")
+
+if __name__ == "__main__":
+    run()

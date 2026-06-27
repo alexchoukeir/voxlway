@@ -43,7 +43,7 @@ def receive_messages(maximum: int = 10) -> list[dict]:
     """
     sqs = _get_sqs_client()
     try:
-        response = sqs.receive_message(QueueUrl=config_settings.sqs_queue, MaxNumberOfMessages=maximum)
+        response = sqs.receive_message(QueueUrl=config_settings.sqs_queue, MaxNumberOfMessages=maximum, WaitTimeSeconds=20)
         messages = response.get('Messages', [])
         return messages
     except Exception as e:
