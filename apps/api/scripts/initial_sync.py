@@ -1,7 +1,6 @@
 import json
 import boto3
-from datetime import datetime
-import hashlib
+from datetime import datetime, timezone
 
 from config import config_settings
 from services.api_fetcher import fetch_game_data
@@ -11,7 +10,7 @@ from models import Game, SyncLog
 
 def run() -> None:
     """
-    Runs the initial sync process.
+    Performs the initial sync of game data from the external API to the database.
     """
     db = SessionLocal()
     sync_log = SyncLog(triggered_by="initial_sync")
@@ -40,7 +39,7 @@ def run() -> None:
         queue = []
         for game in games['games']:
             game_details = games['games'][game]
-            db.add(Game(external_id=game, title=game_details[0], title_hash=hashlib.md5(game_details[0].encode()).hexdigest(), image=game_details[2]))
+            db.add(Game(external_id=game, title=game_details[0], image=game_details[2]))
             queue.append({"external_id": game, "title": game_details[0]})
         db.commit()
         print(f"Inserted {len(queue)} games into the database.")
@@ -50,18 +49,18 @@ def run() -> None:
         send_batch_messages(queue)
         print(f"Queued {len(queue)} games for processing.")
 
-        sync_log.completed_at = datetime.now()
+        sync_log.completed_at = datetime.now(timezone.utc)
         sync_log.new_games = len(queue)
         sync_log.queue_total = len(queue)
         sync_log.status = "queued"
         db.commit()
-        print("Sync completed successfully.")
+        print("Queued games for processing.")
     
     except Exception as e:
         try:
             db.rollback()
-            sync_log.status = f"failed: {e}"
-            sync_log.completed_at = datetime.now()
+            sync_log.status = "failed"
+            sync_log.completed_at = datetime.now(timezone.utc)
             db.add(sync_log)
             db.commit()
         except Exception as log_e:

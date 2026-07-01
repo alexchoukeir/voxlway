@@ -17,7 +17,6 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer, primary_key=True),
         sa.Column("external_id", sa.BigInteger, unique=True, nullable=False),
         sa.Column("title", sa.Text, nullable=False),
-        sa.Column("title_hash", sa.Text, nullable=False),
         sa.Column("image", sa.Text, nullable=False),
         sa.Column("category", sa.Text, nullable=False),
         sa.Column("tags", sa.ARRAY(sa.Text), nullable=True),

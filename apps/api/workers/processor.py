@@ -1,10 +1,9 @@
 import time
 import signal
 import json
-import datetime
+from datetime import datetime, timezone
 
-from apps.api.services.sqs import delete_messages
-from services.sqs import receive_messages
+from services.sqs import receive_messages, delete_messages
 from services.llm import generate
 from services.embeddings import generate_embeddings
 from database import SessionLocal
@@ -23,7 +22,7 @@ signal.signal(signal.SIGINT, signal_handler)
 
 def process_message(message: dict) -> None:
     """
-    Processes the messages.
+    Processes a single message from the SQS queue.
     """
     message_body = json.loads(message['Body'])
 
@@ -49,7 +48,7 @@ def process_message(message: dict) -> None:
         game.tags = result['tags']
         game.embeddings = embedding
         game.processed = True
-        game.processed_at = datetime.now()
+        game.processed_at = datetime.now(timezone.utc)
         db.commit()
     
     except Exception as e:
@@ -66,7 +65,7 @@ def run() -> None:
     
     while running:
         # Receive messages
-        messages = receive_messages(maximum=5)
+        messages = receive_messages(maximum=1)
 
         if not messages:
             continue
@@ -80,8 +79,10 @@ def run() -> None:
                 delete_messages(message['ReceiptHandle'])
             except Exception as e:
                 print(f"Error processing message: {e}")
+                time.sleep(5)
         
-        time.sleep(0.5)
+        if messages:
+            print("Sync completed.")
     
     print("Worker stopped.")
 
