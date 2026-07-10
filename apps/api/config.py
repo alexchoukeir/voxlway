@@ -39,8 +39,9 @@ class ConfigSettings:
         self.db_password = os.environ['DB_PASSWORD']
         self.db_name = os.environ['DB_NAME']
         self.user = os.environ['DB_USER']
-        self.api = os.environ['API']
+        self.api_games = os.environ['API_GAMES']
         self.api_image = os.environ['API_IMAGE']
+        self.api = os.environ['API']
         self.llm_key = os.environ['LLM_KEY']
         self.system_prompt = os.environ['SYSTEM_PROMPT']
         self.sync_key = os.environ['SYNC_KEY']
@@ -54,8 +55,9 @@ class ConfigSettings:
         self.db_password = get_parameters('/games/db-password')
         self.db_name = get_parameters('/games/db-name')
         self.user = get_parameters('/games/db-user')
-        self.api = get_parameters('/games/api')
+        self.api_games = get_parameters('/games/api-games')
         self.api_image = get_parameters('/games/api-image')
+        self.api = get_parameters('/games/api')
         self.llm_key = get_parameters('/games/llm-key')
         self.system_prompt = get_parameters('/games/system-prompt')
         self.sync_key = get_parameters('/games/sync-key')

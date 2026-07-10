@@ -27,9 +27,9 @@ def run() -> None:
         # Backup existing game data to S3
         try:
             print("Backing up game data to S3...")
-            s3 = boto3.client('s3', region_name=config_settings.aws_region)
+            s3 = boto3.client("s3", region_name=config_settings.aws_region)
 
-            s3.put_object(Bucket=config_settings.s3_bucket, Key=f"backup/games_{datetime.now().strftime('%Y-%m-%d_%H:%M:%S')}.json", Body=json.dumps(games).encode("utf-8"))
+            s3.put_object(Bucket=config_settings.s3_bucket, Key=f"backup/games_{datetime.now().strftime("%Y-%m-%d_%H:%M:%S")}.json", Body=json.dumps(games).encode("utf-8"))
             print("Backup completed.")
         except Exception as e:
             print(f"Error backing up game data to S3: {e}")

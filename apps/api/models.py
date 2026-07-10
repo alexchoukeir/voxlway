@@ -10,6 +10,8 @@ class Game(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     external_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False)
     title: Mapped[str] = mapped_column(Text, nullable=False)
+    player_count: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
+    url: Mapped[str] = mapped_column(Text, nullable=False)
     image: Mapped[str] = mapped_column(Text, nullable=False)
     category: Mapped[str] = mapped_column(Text, nullable=False)
     tags: Mapped[list[str]] = mapped_column(ARRAY(Text), nullable=True)
