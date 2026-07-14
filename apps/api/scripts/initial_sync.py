@@ -1,16 +1,12 @@
-import json
-import boto3
 from datetime import datetime, timezone
-
-from config import config_settings
-from services.api_fetcher import fetch_game_data
+from services.data import fetch_game_data
 from services.sqs import send_batch_messages
 from database import SessionLocal
 from models import Game, SyncLog
 
 def run() -> None:
     """
-    Performs the initial sync of game data from the external API to the database.
+    Performs the initial sync of game data.
     """
     db = SessionLocal()
     sync_log = SyncLog(triggered_by="initial_sync")
@@ -19,28 +15,17 @@ def run() -> None:
     db.refresh(sync_log)
 
     try:
-        # Fetch game data from the external API
-        print("Fetching game data from external API...")
+        # Fetch game data
+        print("Fetching game data...")
         games = fetch_game_data()
         print(f"Fetched {len(games['games'])} games.")
-
-        # Backup existing game data to S3
-        try:
-            print("Backing up game data to S3...")
-            s3 = boto3.client("s3", region_name=config_settings.aws_region)
-
-            s3.put_object(Bucket=config_settings.s3_bucket, Key=f"backup/games_{datetime.now().strftime("%Y-%m-%d_%H:%M:%S")}.json", Body=json.dumps(games).encode("utf-8"))
-            print("Backup completed.")
-        except Exception as e:
-            print(f"Error backing up game data to S3: {e}")
         
         # Insert new games into the database
         print("Inserting new games into the database...")
         queue = []
         for game in games['games']:
-            game_details = games['games'][game]
-            db.add(Game(external_id=game, title=game_details[0], image=game_details[2]))
-            queue.append({"external_id": game, "title": game_details[0]})
+            db.add(Game(external_id=game["external_id"], title=game["title"], player_count=game["player_count"], image=game["image"], url=game["url"]))
+            queue.append({"external_id": game["external_id"], "title": game["title"]})
         db.commit()
         print(f"Inserted {len(queue)} games into the database.")
 

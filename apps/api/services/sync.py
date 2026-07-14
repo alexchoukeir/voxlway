@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from api_fetcher import fetch_game_data
+from data import fetch_game_data
 from sqs import send_batch_messages
 from database import SessionLocal
 from sqlalchemy import select
@@ -19,8 +19,8 @@ def run(triggered_by: str) -> None:
     db.refresh(sync_log)
 
     try:
-        # Fetch game data from the external API
-        print("Fetching game data from external API...")
+        # Fetch game data
+        print("Fetching game data...")
         games = fetch_game_data()
         print(f"Fetched {len(games['games'])} games.")
 
@@ -34,25 +34,26 @@ def run(triggered_by: str) -> None:
         
         queue = []
         for game in games['games']:
-            game_details = games['games'][game]
-            title = game_details[0]
-
-            # If the game is not in the database, add it. If it is, see if the title has changed, update and add to queue
-            if game not in db_external_ids:
-                db.add(Game(external_id=game, title=title, image=game_details[2]))
-                queue.append({"external_id": game, "title": game_details[0]})
+            if game["external_id"] not in db_external_ids:
+                db.add(Game(external_id=game["external_id"], title=game["title"], player_count=game["player_count"], image=game["image"], url=game["url"]))
+                queue.append({"external_id": game["external_id"], "title": game["title"]})
                 new += 1
             else:
-                game_in_db = db_external_ids[game]
+                game_in_db = db_external_ids[game["external_id"]]
                 game_in_db.last_synced_at = datetime.now(timezone.utc)
 
-                # If the title is different, update the title and mark for reprocessing
-                if game_in_db.title != title:
-                    game_in_db.title = title
-                    game_in_db.image = game_details[2]
-                    game_in_db.processed = False
-                    game_in_db.reprocess_needed = True
-                    queue.append({"external_id": game, "title": title})
+                # If game data is different, update data
+                if (game_in_db.title != game["title"]) or (game_in_db.player_count != game["player_count"]) or (game_in_db.image != game["image"]) or (game_in_db.url != game["url"]):
+                    game_in_db.title = game["title"]
+                    game_in_db.player_count = game["player_count"]
+                    game_in_db.image = game["image"]
+                    game_in_db.url = game["url"]
+
+                    if game_in_db.title != game["title"]:
+                        game_in_db.processed = False
+                        game_in_db.reprocess_needed = True
+                        queue.append({"external_id": game["external_id"], "title": game["title"]})
+                        
                     updated += 1
         db.commit()
         print(f"Inserted {new} new games and updated {updated} existing games in the database.")
