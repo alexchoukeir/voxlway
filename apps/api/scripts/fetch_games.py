@@ -56,7 +56,7 @@ def fetch_game_images(client: httpx.Client, ids: list[int]) -> dict:
     response.raise_for_status()
     games = response.json()
 
-    images = {game[api[7]]: game[api[8]] for game in games['data']}
+    images = {game[api[8]]: game[api[9]] for game in games['data']}
     return images
 
 def collect_game_data(queries: list[str], games_count: int) -> list[dict]:
@@ -111,11 +111,11 @@ def collect_game_data(queries: list[str], games_count: int) -> list[dict]:
                             "title": game_data[api[3]],
                             "player_count": game_data[api[4]],
                             "image": "",
-                            "url": game_data[api[5]]
+                            "url": api[5] + game_data[api[6]]
                         })
 
                 # Get the next page token for pagination
-                page_token = fetched_games.get(api[6])
+                page_token = fetched_games.get(api[7])
 
                 # If there is no next page token, break out of the loop
                 if not page_token:
