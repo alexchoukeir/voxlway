@@ -38,4 +38,10 @@ jobs:
         working-directory: ./apps/api
 
       - name: Run tasks
-        run: pnpm turbo run build lint
+        env:
+          API: ${{ secrets.API }}
+          GAMES_PAGE_1: ${{ secrets.GAMES_PAGE_1 }}
+          GAMES_PAGE_2: ${{ secrets.GAMES_PAGE_2 }}
+          QUERIES: ${{ secrets.QUERIES }}
+          IMAGES: ${{ secrets.IMAGES }}
+        run: pnpm turbo run build lint test

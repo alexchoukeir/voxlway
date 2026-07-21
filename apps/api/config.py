@@ -49,6 +49,10 @@ class ConfigSettings:
         self.sqs_queue = os.environ['SQS_QUEUE']
         self.sqs_endpoint = os.environ['SQS_ENDPOINT']
         self.s3_bucket = os.environ['S3_BUCKET']
+        self.games_page_1 = os.environ['GAMES_PAGE_1']
+        self.games_page_2 = os.environ['GAMES_PAGE_2']
+        self.queries = os.environ['QUERIES']
+        self.images = os.environ['IMAGES']
         
     def _load_production(self):
         self.db_host = get_parameters('/games/host')
