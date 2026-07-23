@@ -10,7 +10,16 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
-    "test": { "cache": false },
+    "test": { 
+      "cache": false,
+      "env": [
+        "API",
+        "GAMES_PAGE_1",
+        "GAMES_PAGE_2",
+        "QUERIES",
+        "IMAGES"
+      ]
+   },
     "check-types": {
       "dependsOn": ["^check-types"]
     },
