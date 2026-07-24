@@ -17,7 +17,9 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer, primary_key=True),
         sa.Column("external_id", sa.BigInteger, unique=True, nullable=False),
         sa.Column("title", sa.Text, nullable=False),
-        sa.Column("title_hash", sa.Text, nullable=False),
+        sa.Column("player_count", sa.Integer, server_default="0", nullable=False),
+        sa.Column("url", sa.Text, nullable=False),
+        sa.Column("image", sa.Text, nullable=False),
         sa.Column("category", sa.Text, nullable=False),
         sa.Column("tags", sa.ARRAY(sa.Text), nullable=True),
         sa.Column("embedding", Vector(1536), nullable=False),
@@ -38,7 +40,6 @@ def upgrade() -> None:
         sa.Column("status", sa.Text, server_default="running"),
     )
 
-    op.execute("CREATE INDEX ON games USING hnsw (embedding vector_cosine_ops)")
     op.execute("CREATE INDEX ON games (processed)")
     op.execute("CREATE INDEX ON games (external_id)")
     op.execute("CREATE INDEX ON games (category)")

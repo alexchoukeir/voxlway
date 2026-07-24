@@ -8,3 +8,5 @@ __pycache__/
 *.key
 .git/
 docker-compose.yml
+tests/
+pytest.ini

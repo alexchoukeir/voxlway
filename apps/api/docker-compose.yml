@@ -3,14 +3,19 @@ services:
     build: .
     ports:
       - "8000:8000"
+    volumes:
+      - ./alembic/versions:/app/alembic/versions
     environment:
       - ENVIRONMENT=${ENVIRONMENT}
       - DB_HOST=${DB_HOST}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
+      - API_GAMES=${API_GAMES}
+      - API_IMAGE=${API_IMAGE}
       - API=${API}
       - LLM_KEY=${LLM_KEY}
+      - SYSTEM_PROMPT=${SYSTEM_PROMPT}
       - SYNC_KEY=${SYNC_KEY}
       - AWS_REGION=${AWS_REGION}
       - SQS_QUEUE=${SQS_QUEUE}
