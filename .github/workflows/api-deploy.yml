@@ -48,14 +48,14 @@ jobs:
           INSTANCE_ID: ${{ secrets.INSTANCE_ID }}
         run: |
           COMMAND_ID=$(aws ssm send-command --instance-ids $INSTANCE_ID --document-name "AWS-RunShellScript" \
-            --parameters commands="[
-              'aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY',
-              'docker pull $ECR_REGISTRY/$ECR_REPOSITORY:latest',
-              'docker run --rm $ECR_REGISTRY/$ECR_REPOSITORY:latest alembic upgrade head',
-              'sudo systemctl restart $ECR_REPOSITORY $WORKER',
-              'docker image prune -f',
-              'echo "API Deployment complete"'
-            ]" \
+            --parameters '{"commands":[
+              "aws ecr get-login-password --region '"$AWS_REGION"' | docker login --username AWS --password-stdin '"$ECR_REGISTRY"'",
+              "docker pull '"$ECR_REGISTRY"'/'"$ECR_REPOSITORY"':latest",
+              "docker run --rm '"$ECR_REGISTRY"'/'"$ECR_REPOSITORY"':latest alembic upgrade head",
+              "sudo systemctl restart '"$ECR_REPOSITORY"' '"$WORKER"'",
+              "docker image prune -f",
+              "echo API Deployment complete"
+            ]}' \
             --region $AWS_REGION --query 'Command.CommandId' --output text)
           
           aws ssm wait command-executed --command-id $COMMAND_ID --instance-id $INSTANCE_ID --region $AWS_REGION
