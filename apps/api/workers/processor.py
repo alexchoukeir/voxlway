@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 
 from services.sqs import receive_messages, delete_messages
 from services.llm import generate
-from services.embeddings import generate_embeddings
+from services.embeddings import generate_embedding
 from database import SessionLocal
 from sqlalchemy import select
 from models import Game
@@ -41,7 +41,7 @@ def process_message(message: dict) -> None:
         # Generate
         result = generate(title)
         embedding_text = f"{title} {result['category']} {' '.join(result['tags'])}"
-        embedding = generate_embeddings(embedding_text)
+        embedding = generate_embedding(embedding_text)
         
         # Store in db
         game.category = result['category']
