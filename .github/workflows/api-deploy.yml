@@ -51,7 +51,7 @@ jobs:
             --parameters '{"commands":[
               "aws ecr get-login-password --region '"$AWS_REGION"' | docker login --username AWS --password-stdin '"$ECR_REGISTRY"'",
               "docker pull '"$ECR_REGISTRY"'/'"$ECR_REPOSITORY"':latest",
-              "docker run --rm '"$ECR_REGISTRY"'/'"$ECR_REPOSITORY"':latest alembic upgrade head",
+              "docker run --rm --env ENVIRONMENT=production --env-file /etc/games/production.env '"$ECR_REGISTRY"'/'"$ECR_REPOSITORY"':latest alembic upgrade head",
               "sudo systemctl restart '"$ECR_REPOSITORY"' '"$WORKER"'",
               "docker image prune -f",
               "echo API Deployment complete"
