@@ -23,6 +23,10 @@ services:
       - S3_BUCKET=${S3_BUCKET}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - GAMES_PAGE_1=${GAMES_PAGE_1}
+      - GAMES_PAGE_2=${GAMES_PAGE_2}
+      - QUERIES=${QUERIES}
+      - IMAGES=${IMAGES}
     depends_on:
       db:
         condition: service_healthy
@@ -31,15 +35,18 @@ services:
 
   worker:
     build: .
-    command: /app/.venv/bin/python workers/processor.py
+    command: /app/.venv/bin/python -m workers.processor
     environment:
       - ENVIRONMENT=${ENVIRONMENT}
       - DB_HOST=${DB_HOST}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
+      - API_GAMES=${API_GAMES}
+      - API_IMAGE=${API_IMAGE}
       - API=${API}
       - LLM_KEY=${LLM_KEY}
+      - SYSTEM_PROMPT=${SYSTEM_PROMPT}
       - SYNC_KEY=${SYNC_KEY}
       - AWS_REGION=${AWS_REGION}
       - SQS_QUEUE=${SQS_QUEUE}
@@ -47,6 +54,10 @@ services:
       - S3_BUCKET=${S3_BUCKET}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - GAMES_PAGE_1=${GAMES_PAGE_1}
+      - GAMES_PAGE_2=${GAMES_PAGE_2}
+      - QUERIES=${QUERIES}
+      - IMAGES=${IMAGES}
     depends_on:
       db:
         condition: service_healthy
