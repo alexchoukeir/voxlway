@@ -18,7 +18,7 @@ def get_parameters(parameter_name: str) -> str:
         str: The value of the parameter.
     """
     try:
-        ssm = boto3.client('ssm')
+        ssm = boto3.client('ssm', region_name=os.environ['AWS_REGION'])
         response = ssm.get_parameter(Name=parameter_name, WithDecryption=True)
         par = response['Parameter']['Value']
         if not par:
