@@ -15,7 +15,7 @@ def get_queries() -> dict:
         dict: A dictionary containing the queries.
     """
     s3 = boto3.client('s3', region_name=config_settings.aws_region)
-    response = s3.get_object(Bucket=config_settings.s3_bucket, Key='queries.json')
+    response = s3.get_object(Bucket=config_settings.config_s3_bucket, Key='queries.json')
     queries = json.loads(response['Body'].read())
     return queries
 
@@ -167,8 +167,8 @@ def run() -> None:
     s3 = boto3.client("s3", region_name=config_settings.aws_region)
 
     try:
-        s3.put_object(Bucket=config_settings.s3_bucket, Key="game-data/latest.json", Body=json.dumps({"games": games}).encode("utf-8"))
-        s3.put_object(Bucket=config_settings.s3_bucket, Key=f"game-data/games-{datetime.now(timezone.utc).strftime("%Y-%m-%d_%H:%M:%S")}.json", Body=json.dumps({"games": games}).encode("utf-8"))
+        s3.put_object(Bucket=config_settings.data_s3_bucket, Key="game-data/latest.json", Body=json.dumps({"games": games}).encode("utf-8"))
+        s3.put_object(Bucket=config_settings.data_s3_bucket, Key=f"game-data/games-{datetime.now(timezone.utc).strftime("%Y-%m-%d_%H:%M:%S")}.json", Body=json.dumps({"games": games}).encode("utf-8"))
         print(f"Successfully uploaded {len(games)} games to S3.")
     except Exception as e:
         raise RuntimeError(f"Error uploading games to S3: {e}") from e
