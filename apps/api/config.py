@@ -48,7 +48,8 @@ class ConfigSettings:
         self.aws_region = os.environ['AWS_REGION']
         self.sqs_queue = os.environ['SQS_QUEUE']
         self.sqs_endpoint = os.environ['SQS_ENDPOINT']
-        self.s3_bucket = os.environ['S3_BUCKET']
+        self.data_s3_bucket = os.environ['DATA_S3_BUCKET']
+        self.config_s3_bucket = os.environ['CONFIG_S3_BUCKET']
         self.games_page_1 = os.environ['GAMES_PAGE_1']
         self.games_page_2 = os.environ['GAMES_PAGE_2']
         self.queries = os.environ['QUERIES']
@@ -68,7 +69,8 @@ class ConfigSettings:
         self.aws_region = get_parameters('/games/aws-region')
         self.sqs_queue = get_parameters('/games/sqs-queue')
         self.sqs_endpoint = None
-        self.s3_bucket = get_parameters('/games/s3-bucket')
+        self.data_s3_bucket = get_parameters('/games/data-s3-bucket')
+        self.config_s3_bucket = get_parameters('/games/config-s3-bucket')
 
     @property
     def database_url(self) -> str:
