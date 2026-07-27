@@ -29,7 +29,7 @@ def run() -> None:
         db.commit()
         print(f"Inserted {len(queue)} games into the database.")
 
-        # Send messages
+        # Send messages to SQS
         print("Sending messages to SQS for processing...")
         send_batch_messages(queue)
         print(f"Queued {len(queue)} games for processing.")
