@@ -1,7 +1,7 @@
 import os
 import pytest
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 from database import Base
 
 @pytest.fixture
@@ -27,12 +27,13 @@ def get_db():
 
     Base.metadata.create_all(engine)
     transaction = connection.begin()
-    SessionLocal = sessionmaker(bind=engine)
-    session = SessionLocal()
+    session = Session(bind=connection)
+    session.begin_nested()
 
     yield session
 
     session.close()
     transaction.rollback()
     connection.close()
+    Base.metadata.drop_all(bind=engine)
     engine.dispose()
