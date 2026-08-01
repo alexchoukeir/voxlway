@@ -1,3 +1,5 @@
+import types
+
 from google import genai
 from config import config_settings
 
@@ -17,7 +19,9 @@ def generate_embedding(text: str) -> list[float]:
         response = client.models.embed_content(
             model="gemini-embedding-2",
             contents=text,
-            output_dimensionality=1536
+            config=types.EmbedContentConfig(
+                output_dimensionality=1536
+            )
         )
         return response.embeddings
     except Exception as e:
