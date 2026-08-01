@@ -19,7 +19,7 @@ async def get_db():
     Hands a database session.
 
     Yields:
-        AsyncSession: An asynchronous SQLAlchemy session object.
+        Session: An asynchronous SQLAlchemy session object.
     """
     async with AsyncSessionLocal() as session:
         yield session
