@@ -18,7 +18,7 @@ def generate(title: str) -> dict:
         dict: The generated metadata.
     """
     try:
-        response = client.models.completions.generate_content(
+        response = client.models.generate_content(
             model="gemini-3.5-flash",
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
