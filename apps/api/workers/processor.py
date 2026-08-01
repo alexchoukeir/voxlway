@@ -34,8 +34,8 @@ def process_message(message: dict) -> None:
     try:
         game = db.execute(select(Game).where(Game.external_id == external_id)).scalar_one_or_none()
 
-        if game:
-            print(f"Game with external_id {external_id} already exists in the database. Skipping.")
+        if not game:
+            print(f"Game with external_id {external_id} not found in the database.")
             return
 
         # Generate
