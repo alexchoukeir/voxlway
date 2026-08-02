@@ -46,7 +46,7 @@ def process_message(message: dict) -> None:
         # Store in db
         game.category = result['category']
         game.tags = result['tags']
-        game.embeddings = embedding
+        game.embedding = embedding
         game.processed = True
         game.processed_at = datetime.now(timezone.utc)
         db.commit()
