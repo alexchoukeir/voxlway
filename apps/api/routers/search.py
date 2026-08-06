@@ -1,15 +1,18 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from database import get_db
 from services.embeddings import async_generate_embedding
 from models import Game
 from schemas import Games
+from limiter import limiter
 
 router = APIRouter()
 
 @router.get("/search")
+@limiter.limit("5/hour")
 async def search(
+    request: Request,
     q: str = Query(..., description="The search query", min_length=1, max_length=150),
     db: AsyncSession = Depends(get_db)
 ) -> list[Games]:
@@ -18,9 +21,9 @@ async def search(
     """
     try:
         # Generate embedding for the query
-        embedding = await async_generate_embedding(q)
+        embedding = await async_generate_embedding(q.strip())
     except Exception as e:
-        raise HTTPException(status_code=503, detail="Search service is currently unavailable. Please try again later.")
+        raise HTTPException(status_code=503, detail="Search service is currently unavailable. Please try again later.") from e
 
     # Calculate cosine similarity
     distance = Game.embedding.cosine_distance(embedding)
@@ -39,7 +42,7 @@ async def search(
         results = await db.execute(query)
         results = results.all()
     except Exception as e:
-        raise HTTPException(status_code=503, detail="Search service is currently unavailable. Please try again later.")
+        raise HTTPException(status_code=503, detail="Search service is currently unavailable. Please try again later.") from e
 
     return [
         {

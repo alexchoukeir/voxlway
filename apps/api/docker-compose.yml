@@ -28,6 +28,7 @@ services:
       - GAMES_PAGE_2=${GAMES_PAGE_2}
       - QUERIES=${QUERIES}
       - IMAGES=${IMAGES}
+      - CLOUDFRONT=${CLOUDFRONT}
     depends_on:
       db:
         condition: service_healthy
@@ -60,6 +61,7 @@ services:
       - GAMES_PAGE_2=${GAMES_PAGE_2}
       - QUERIES=${QUERIES}
       - IMAGES=${IMAGES}
+      - CLOUDFRONT=${CLOUDFRONT}
     depends_on:
       db:
         condition: service_healthy

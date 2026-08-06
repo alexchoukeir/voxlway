@@ -54,6 +54,7 @@ class ConfigSettings:
         self.games_page_2 = os.environ['GAMES_PAGE_2']
         self.queries = os.environ['QUERIES']
         self.images = os.environ['IMAGES']
+        self.cloudfront = os.environ['CLOUDFRONT']
         
     def _load_production(self):
         self.db_host = get_parameters('/games/host')
@@ -71,6 +72,7 @@ class ConfigSettings:
         self.sqs_endpoint = None
         self.data_s3_bucket = get_parameters('/games/data-s3-bucket')
         self.config_s3_bucket = get_parameters('/games/config-s3-bucket')
+        self.cloudfront = get_parameters('/games/cloudfront')
 
     @property
     def database_url(self) -> str:
