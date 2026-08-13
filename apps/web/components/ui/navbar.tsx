@@ -4,7 +4,6 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/public/logo.svg";
-import { Menu } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -25,7 +24,7 @@ export function Navbar() {
         >
           <Image className="h-7" src={logo} alt="Logo" width={32} height={32} />
           <span className="self-center text-xl text-heading font-semibold whitespace-nowrap">
-            Games
+            Voxlway
           </span>
         </Link>
 
@@ -48,7 +47,7 @@ export function Navbar() {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
-                render={<Link href="" />}
+                render={<Link href="#features" />}
                 className={cn(
                   navigationMenuTriggerStyle(),
                   "block py-2 px-3 hover:bg-neutral-tertiary",

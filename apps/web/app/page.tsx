@@ -1,9 +1,11 @@
 import { Navbar } from "@/components/ui/navbar";
 import Image from "next/image";
 import backgroundImage from "@/public/background.png";
-import featuresImage from "@/public/features.png";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+
+import { Features } from "@/components/ui/features";
+import { Footer } from "@/components/ui/footer";
 
 export default function Home() {
   return (
@@ -31,11 +33,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="relative w-full overflow-hidden">
-        <div className="z-10 h-full w-full">
-          <Image src={featuresImage} alt="Features" />
-        </div>
-      </section>
+      <Features></Features>
+      <Footer></Footer>
     </div>
   );
 }
