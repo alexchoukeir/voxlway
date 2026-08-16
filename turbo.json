@@ -5,21 +5,16 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["API_URL"]
     },
     "lint": {
       "dependsOn": ["^lint"]
     },
-    "test": { 
+    "test": {
       "cache": false,
-      "env": [
-        "API",
-        "GAMES_PAGE_1",
-        "GAMES_PAGE_2",
-        "QUERIES",
-        "IMAGES"
-      ]
-   },
+      "env": ["API", "GAMES_PAGE_1", "GAMES_PAGE_2", "QUERIES", "IMAGES"]
+    },
     "check-types": {
       "dependsOn": ["^check-types"]
     },

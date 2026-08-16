@@ -15,7 +15,7 @@ export function Features() {
       />
       <div className="col-start-1 row-start-1 z-10 m-10 max-w-screen-xl bg-background rounded-2xl border border-stroke-green sm:p-10">
         <div className="text-center m-10">
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl">
+          <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-5xl">
             Stop Scrolling, Start Playing
           </h1>
           <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
