@@ -2,6 +2,7 @@ import Image from "next/image";
 import backgroundImage from "@/public/background.png";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { SearchBar } from "./search";
 
 export function Hero() {
   return (
@@ -18,11 +19,7 @@ export function Hero() {
           Search using natural language to find the next game you want to play.
         </h2>
         <div className="relative w-full">
-          <Input
-            className="bg-background w-full"
-            placeholder="Search..."
-          ></Input>
-          <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none"></Search>
+          <SearchBar></SearchBar>
         </div>
       </div>
     </section>
