@@ -1,3 +1,5 @@
-export default async function ResultsPage() {
+"use client";
+
+export default function ResultsPage() {
   return <div></div>;
 }
