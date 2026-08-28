@@ -1,7 +1,5 @@
 import Image from "next/image";
 import backgroundImage from "@/public/background.png";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
 import { SearchBar } from "./search";
 
 export function Hero() {
