@@ -6,6 +6,10 @@ on:
     paths:
       - "apps/web/**"
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy:
     name: Deploy Web App to AWS
