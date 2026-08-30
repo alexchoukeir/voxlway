@@ -81,6 +81,8 @@ a {
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   --color-stroke-green: var(--stroke-green);
+  --color-category-background: var(--category-background);
+  --color-category-foreground: var(--category-foreground);
 }
 
 :root {

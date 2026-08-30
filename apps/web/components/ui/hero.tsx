@@ -1,5 +1,5 @@
 import Image from "next/image";
-import backgroundImage from "@/public/background.png";
+import backgroundImage from "@/public/hero.webp";
 import { SearchBar } from "./search";
 
 export function Hero() {
