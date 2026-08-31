@@ -29,7 +29,7 @@ export function SearchBar({ initialSearchQuery = "", className }: SearchProps) {
   }
 
   return (
-    <form onSubmit={handleSearch}>
+    <form onSubmit={handleSearch} className="pt-2">
       <Input
         className={cn("bg-background w-full", className)}
         placeholder="Search..."
@@ -38,7 +38,7 @@ export function SearchBar({ initialSearchQuery = "", className }: SearchProps) {
       ></Input>
       <Button className="sr-only" type="submit"></Button>
       {!className && (
-        <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none"></Search>
+        <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/4 text-muted-foreground pointer-events-none"></Search>
       )}
     </form>
   );
