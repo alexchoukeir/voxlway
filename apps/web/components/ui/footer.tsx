@@ -25,6 +25,7 @@ export function Footer() {
               alt="Logo"
               width={32}
               height={32}
+              style={{ width: "auto" }}
             />
             <span className="self-center text-2xl text-heading font-semibold whitespace-nowrap">
               Voxlway

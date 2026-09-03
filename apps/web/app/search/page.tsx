@@ -1,5 +1,6 @@
 "use client";
 
+import { Footer } from "@/components/ui/footer";
 import { GameCardSkeleton } from "@/components/ui/game-card-skeleton";
 import { GamesContainer } from "@/components/ui/games-container";
 import { Navbar } from "@/components/ui/navbar";
@@ -36,13 +37,7 @@ export default function SearchPage() {
   }, [query]);
 
   return (
-    <div className="w-full">
-      <Navbar></Navbar>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
+    <div className="w-full pt-18">
       <div className="max-w-screen-xl mx-auto">
         {!query ? (
           <p>Search for a game</p>
