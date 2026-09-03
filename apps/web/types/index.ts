@@ -9,3 +9,5 @@ export interface Games {
   tags: string[] | null;
   similarity: number;
 }
+
+export type Sort = "relevance" | "playerCount" | "AToZ" | "ZToA";

@@ -71,7 +71,7 @@ export default function SearchPage() {
         ) : error ? (
           <p className="text-center text-destructive">{error}</p>
         ) : (
-          <GamesContainer games={results}></GamesContainer>
+          <GamesContainer games={results} query={query}></GamesContainer>
         )}
       </div>
     </div>

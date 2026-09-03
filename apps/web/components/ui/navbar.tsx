@@ -22,7 +22,14 @@ export function Navbar() {
           href="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <Image className="h-7" src={logo} alt="Logo" width={32} height={32} />
+          <Image
+            className="h-7"
+            src={logo}
+            alt="Logo"
+            width={32}
+            height={32}
+            style={{ width: "auto" }}
+          />
           <span className="self-center text-xl text-heading font-semibold whitespace-nowrap">
             Voxlway
           </span>

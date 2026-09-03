@@ -30,6 +30,7 @@ export function GameCard({ game }: GameCardProps) {
               alt="text"
               className="object-cover"
               fill
+              priority
             ></Image>
           </AspectRatio>
         </div>
