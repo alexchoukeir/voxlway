@@ -4,6 +4,9 @@ import { Games, Sort } from "@/types";
 import { GameCard } from "./game-card";
 import { Filter } from "./filter";
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import { Button } from "./button";
+import { useRouter } from "next/navigation";
 
 interface GamesResultsProps {
   games: Games[];
@@ -16,6 +19,8 @@ export function GamesContainer({ games, query }: GamesResultsProps) {
     new Set(),
   );
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
+
+  const router = useRouter();
 
   // Reset filters when games change
   useEffect(() => {
@@ -125,9 +130,28 @@ export function GamesContainer({ games, query }: GamesResultsProps) {
     setSelectedTags(new Set());
   };
 
+  const handleReturnToHome = () => {
+    router.push("/");
+  };
+
   // If there are no games to display, display a message indicating that there are no results
   if (games.length == 0) {
-    return <div>No results</div>;
+    return (
+      <div className="flex h-screen flex-col items-center justify-center gap-4">
+        <Image
+          src="/no-results.webp"
+          alt="No results"
+          width={833}
+          height={351}
+          quality={100}
+        />
+        <h1 className="text-2xl font-bold">No results found</h1>
+        <p className="text-lg text-muted-foreground">
+          Try again using different words
+        </p>
+        <Button onClick={handleReturnToHome}>Return to Home</Button>
+      </div>
+    );
   }
 
   return (

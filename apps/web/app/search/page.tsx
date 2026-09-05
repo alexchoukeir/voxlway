@@ -7,8 +7,10 @@ import { Navbar } from "@/components/ui/navbar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { searchGames } from "@/lib/api";
 import { Games } from "@/types";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
@@ -17,6 +19,8 @@ export default function SearchPage() {
   const [results, setResults] = useState<Games[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (!query) {
@@ -35,6 +39,10 @@ export default function SearchPage() {
       })
       .finally(() => setIsLoading(false));
   }, [query]);
+
+  const handleReturnToHome = () => {
+    router.push("/");
+  };
 
   return (
     <div className="w-full pt-18">
@@ -64,7 +72,17 @@ export default function SearchPage() {
             </main>
           </div>
         ) : error ? (
-          <p className="text-center text-destructive">{error}</p>
+          <div className="flex h-screen flex-col items-center justify-center gap-4">
+            <Image
+              src="/error.webp"
+              alt="Error"
+              width={879}
+              height={410}
+              quality={100}
+            />
+            <h1 className="text-2xl font-bold text-destructive">{error}</h1>
+            <Button onClick={handleReturnToHome}>Return to Home</Button>
+          </div>
         ) : (
           <GamesContainer games={results} query={query}></GamesContainer>
         )}

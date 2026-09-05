@@ -70,13 +70,13 @@ export function Navbar() {
           </span>
         </Link>
 
-        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        {/* <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <Button>Get Started</Button>
-        </div>
+        </div> */}
 
         <NavigationMenu className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
           <NavigationMenuList className="flex flex-col p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0">
-            <NavigationMenuItem>
+            {/* <NavigationMenuItem>
               <NavigationMenuLink
                 render={<Link href="/games" />}
                 className={cn(
@@ -86,10 +86,10 @@ export function Navbar() {
               >
                 Games
               </NavigationMenuLink>
-            </NavigationMenuItem>
+            </NavigationMenuItem> */}
             <NavigationMenuItem>
               <NavigationMenuLink
-                render={<Link href="#features" />}
+                render={<Link href="/#features" />}
                 className={cn(
                   navigationMenuTriggerStyle(),
                   "block py-2 px-3 hover:bg-neutral-tertiary",
