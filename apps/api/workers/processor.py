@@ -50,6 +50,7 @@ def process_message(message: dict) -> None:
         game.processed = True
         game.processed_at = datetime.now(timezone.utc)
         db.commit()
+        print(f"Processed game with external_id {external_id} and title '{title}'.")
     
     except Exception as e:
         print(f"Error: {e}")

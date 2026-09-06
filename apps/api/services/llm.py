@@ -24,14 +24,16 @@ def generate(title: str) -> dict:
     """
     try:
         response = client.models.generate_content(
-            model="gemini-3.5-flash",
+            model="gemini-3.8-flash",
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
                 response_mime_type="application/json",
-                response_schema=GameData
+                response_schema=GameData,
+                max_output_tokens=1800,
             ),
             contents=f'Game title: "{title}"'
         )
+        print(f"Output tokens: {response.usage_metadata.candidates_token_count}")
         return json.loads(response.text)
     except Exception as e:
         raise RuntimeError(f"Error generating metadata for title '{title}': {e}") from e
