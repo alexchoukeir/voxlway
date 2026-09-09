@@ -1,5 +1,5 @@
 import Image from "next/image";
-import featuresImage from "@/public/features.png";
+import featuresImage from "@/public/features.webp";
 import { ListFilter, Search, User } from "lucide-react";
 
 export function Features() {

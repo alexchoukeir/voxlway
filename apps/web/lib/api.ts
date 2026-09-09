@@ -1,6 +1,6 @@
 import { Games } from "@/types";
 
-const API = process.env.API_URL;
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 export async function searchGames(query: string): Promise<Games[]> {
   const parameters = new URLSearchParams({ q: query });

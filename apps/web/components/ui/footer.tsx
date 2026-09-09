@@ -25,6 +25,7 @@ export function Footer() {
               alt="Logo"
               width={32}
               height={32}
+              style={{ width: "auto" }}
             />
             <span className="self-center text-2xl text-heading font-semibold whitespace-nowrap">
               Voxlway
@@ -33,7 +34,7 @@ export function Footer() {
 
           <NavigationMenu>
             <NavigationMenuList className="flex flex-wrap items-center mb-6 text-sm font-medium text-body sm:mb-0">
-              <NavigationMenuItem>
+              {/* <NavigationMenuItem>
                 <NavigationMenuLink
                   render={<Link href="/games" />}
                   className={cn(
@@ -43,10 +44,10 @@ export function Footer() {
                 >
                   Games
                 </NavigationMenuLink>
-              </NavigationMenuItem>
+              </NavigationMenuItem> */}
               <NavigationMenuItem>
                 <NavigationMenuLink
-                  render={<Link href="" />}
+                  render={<Link href="/#features" />}
                   className={cn(
                     navigationMenuTriggerStyle(),
                     "hover:underline me-4 md:me-6",
