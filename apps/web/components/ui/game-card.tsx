@@ -5,7 +5,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
-import Background from "@/public/background.png";
 import { User } from "lucide-react";
 import { Badge } from "./badge";
 import { Games } from "@/types";

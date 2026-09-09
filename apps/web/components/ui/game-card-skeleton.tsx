@@ -1,5 +1,5 @@
 import { AspectRatio } from "./aspect-ratio";
-import { Card, CardContent, CardHeader } from "./card";
+import { Card, CardHeader } from "./card";
 import { Skeleton } from "./skeleton";
 
 export function GameCardSkeleton() {
