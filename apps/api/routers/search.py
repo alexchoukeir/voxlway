@@ -10,7 +10,7 @@ from limiter import limiter
 router = APIRouter()
 
 @router.get("/search")
-@limiter.limit("5/minute")
+@limiter.limit("8/hour")
 async def search(
     request: Request,
     q: str = Query(..., description="The search query", min_length=1, max_length=150),

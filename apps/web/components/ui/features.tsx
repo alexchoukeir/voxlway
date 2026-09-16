@@ -24,7 +24,7 @@ export function Features() {
               <h2 className="my-4 text-2xl font-extrabold tracking-tight leading-none text-gray-900">
                 Smart Search
               </h2>
-              Describe the gameplay, mechanics or vibe, and get relevant results
+              Describe the gameplay, mechanics, or vibe and get relevant results
               instantly.
             </div>
             <div className="flex flex-col items-center pt-10 px-10 flex-1">
