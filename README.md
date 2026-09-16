@@ -1,135 +1,102 @@
-# Turborepo starter
+<div align="center">
+    <img src="apps/web/public/logo.svg" alt="Logo" width="120" height="120">
+    <h1>Voxlway</h1>
+</div>
 
-This Turborepo starter is maintained by the Turborepo core team.
+[![CI](https://img.shields.io/github/actions/workflow/status/alexchoukeir/voxlway/ci.yml?branch=main&label=CI)](https://github.com/alexchoukeir/voxlway/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-## Using this example
+Voxlway ([voxlway.com](https://www.voxlway.com)) is a semantic search engine and discovery platform to help users find Roblox games. It utilizes LLMs and vector embeddings to make game discovery much quicker and more accurate. Instead of endlessly scrolling, users can describe gameplay, mechanics, or vibe and get relevant results instantly.
 
-Run the following command:
+## 🚀 Key Features
 
-```sh
-npx create-turbo@latest
+- **Natural Language Search**: Users can search for games using full descriptions of the vibe or gameplay instead of exact titles (e.g. "cozy building game with friends").
+
+- **Instant Filtering**: Allows users to narrow down and refine search results using filters like category and tags.
+
+- **LLM Data Enrichment**: Fetches raw game data and passes it through an LLM to generate metadata.
+
+- **Vector Similarity Search**: Translates natural language into vector embeddings and uses cosine similarity to measure how well a game matches the meaning of a user's search query.
+
+## 📸 Screenshots
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js
+- **Backend**: FastAPI
+- **Database**: PostgreSQL with pgvector hosted on AWS RDS
+- **DevOps and Infrastructure**: Docker, AWS (S3, CloudFront, ECR, EC2, SQS, Route 53), GitHub Actions
+- **Tooling and Workspace**: pnpm, Turborepo, uv
+
+## 📁 Project Structure
+
+```plaintext
+voxlway/
+│
+├── apps/
+│   ├── api/        # FastAPI backend
+│   └── web/        # Next.js frontend
+│
+├── package.json    # Project configuration file
+├── turbo.json      # Turborepo configuration file
+└── README.md       # README file
 ```
 
-## What's inside?
+## 🚀 Getting Started
 
-This Turborepo includes the following packages/apps:
+### Prerequisites
 
-### Apps and Packages
+- **Python (3.10 or higher)**
+- **uv**
+- **pnpm**
+- **Node.js**
+- **Docker & Docker Compose**
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Setup
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+1. **Clone the repository**
 
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```bash
+git clone https://github.com/alexchoukeir/voxlway.git
+cd voxlway
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+2. **Install Dependencies**
+   - **Frontend & Monorepo**:
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+   ```bash
+   pnpm install
+   ```
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+   - **Backend**: Setup local python environment
 
-### Develop
+   ```bash
+   cd apps/api
+   uv sync --frozen
+   ```
 
-To develop all apps and packages, run the following command:
+3. Start Docker
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+cd apps/api
+docker compose up --build
+cd ../..
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+4. Running the project
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+```bash
+pnpm dev
 ```
 
-### Remote Caching
+- **Next.js frontend**: `localhost:3000`
+- **FastAPI backend**: `localhost:8000`
+- **ElasticMQ**: `localhost:9324` and `localhost:9325`
+- **PostgreSQL database**: `localhost:5432`
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+## 🧠 Team
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+| Member                 | Position                     | Responsibilities                                                                                                              |
+| ---------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Alexander Choukeir** | Lead Developer               | Full-stack architecture, frontend & backend implementation, database design & management, CI/CD, DevOps, Cloud Infrastructure |
+| **Hadi Mansour**       | UI/UX Designer and 3D Artist | Brand identity, wireframing, high-fidelity page designs, asset modeling                                                       |
