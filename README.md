@@ -20,6 +20,9 @@ Voxlway ([voxlway.com](https://www.voxlway.com)) is a semantic search engine and
 
 ## 📸 Screenshots
 
+<img width="2508" height="1636" alt="image" src="https://github.com/user-attachments/assets/ad76fce5-45c0-4281-84d0-17706a281835" />
+<img width="2508" height="1660" alt="image" src="https://github.com/user-attachments/assets/a30295f5-830c-4548-a990-de39c64d5e99" />
+
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js
